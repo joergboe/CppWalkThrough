@@ -27,7 +27,7 @@ int main() {
 	//color = purple; //error: ‘purple’ was not declared in this scope
 	color = Color::purple;
 	cout << "Value of purple: " << static_cast<int>(color) << endl;
-	cout << "No direct conversion from int to Color. Use functional cast!\n";
+	cout << "No direct conversion from int to Color. Use functional cast! \n";
 	//color = 4; //error: cannot convert ‘int’ to ‘main()::Color’ in assignment
 	color = Color(4);
 	cout << "Value of color: " << static_cast<int>(color) << endl;
