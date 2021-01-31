@@ -4,7 +4,7 @@
 //============================================================================
 
 #include <iostream>
-#include <exception>
+#include <string>
 #include <stdexcept>
 
 using std::cout;
@@ -33,6 +33,9 @@ public:
 		i(myclass.i) {
 		cout << "MyClass(MyClass const & myclass)\n";
 	}
+	// TODO: Is copy constructor sufficient ?
+	MyClass& operator=(MyClass const & myclass) = delete;
+
 	~MyClass() {
 		cout << "~MyClass()\n";
 	}
