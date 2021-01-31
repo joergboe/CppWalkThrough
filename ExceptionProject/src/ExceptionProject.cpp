@@ -84,8 +84,7 @@ int main() {
 	cout << "\n"
 			"The top level cv-qualifier in the catch-clause is ignored during exception handler detection.\n"
 			"It prevents us from changing e\n";
-	int arr1[] = {0, 1, 4, 5, 6, 9};
-	for (int i : arr1) {
+	for (int i : {0, 1, 4, 5, 6, 9}) {
 		try {
 			myfunc(i);
 		} catch (const int e) {
@@ -113,8 +112,7 @@ int main() {
 			"1. E and H are the same type (ignoring top-level cv-qualifiers on H)\n"
 			"2. H is an unambiguous public base class of E\n\n";
 
-	int arr2[] = {12, 13};
-	for (int i : arr2) {
+	for (int i : {12, 13}) {
 		try {
 			myfunc(i);
 		} catch (invalid_argument e) {
@@ -138,8 +136,7 @@ int main() {
 			"3. H is an lvalue-reference to (possibly cv-qualified) E\n"
 			"4. H is a reference to an unambiguous public base class of E\n\n";
 
-	int arr3[] = {0, 12, 13};
-	for (int i : arr3) {
+	for (int i : {0, 12, 13}) {
 		try {
 			myfunc(i);
 		} catch (invalid_argument & e) {
@@ -210,8 +207,7 @@ int main() {
 			"Handler with unnamed parameter:\n"
 			"\nA 'char const *' can not be converted to a 'cahr *', thus #11 falls through!\n"
 			"But the ellipsis '...' catches all exceptions.\n";
-	int arr5[] = {10, 11, 16};
-	for (int i : arr5) {
+	for (int i : {10, 11, 16}) {
 		try {
 			myfunc(i);
 		} catch (char * e) {
@@ -230,9 +226,8 @@ int main() {
 			"Re-throw exceptions:\n"
 			"\nA use throw to re-throw an exception.\n";
 
-	int arr6[] = {13, 13, 13};
 	int counter = 0;
-	for (int i : arr6) {
+	for (int i : {13, 13, 13}) {
 		try {
 			try {
 				myfunc(i);
