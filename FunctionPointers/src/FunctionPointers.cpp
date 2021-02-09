@@ -102,6 +102,12 @@ int main() {
 	cout << "typeinfo Alias2  : " << typeid(Alias2).name() << endl;
 	cout << "typeinfo Alias3  : " << typeid(Alias3).name() << endl;
 
+	cout << "No assignement to 'void *' possible!\n";
+	//void * vptr = fp1; //error: invalid conversion from ‘int (*)(int)’ to ‘void*’ [-fpermissive]
+	cout << "Can assign 'nullptr' to function pointer but never call such function!\n";
+	fp1 = nullptr;
+	// (*fp1)(3); //never!
+
 	cout << "END" << endl;
 	return 0;
 }
