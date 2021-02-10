@@ -140,11 +140,33 @@ int main() {
 	(base1.*fmp1)('@');
 	(base1.*fmp2)(999);
 
+	cout << "\n****** compare pointer to members ******\n";
+	cout << "\nPointer to members of same type can be compared:\n";
+	if (mess_ptr == mptr4) {
+		cout << "Equal pointers point to the same member but may not point to different objects.\n"
+				"(*fp1)(7)=" << base1.*mess_ptr << endl <<
+				"(*pa1)(7)=" << derived1.*mptr4 << endl;
+	}
+	cout << "\nThe same applies to pointers to member functions:\n";
+	if (fmp1 != func_ptr1) {
+		cout << "&Base::setB and &Base::setA are not equal\n";
+	}
+	cout << "Distinct pointer types without a cast can not be compared.\n";
+	//if (mess_ptr == mptr3); //comparison between distinct pointer types ‘const char* Base::*’ and ‘BaseToCharMemberPtr’ {aka ‘char Base::*’} lacks a cast [-fpermissive]
+	cout << "Can assign 'nullptr' to pointer to member but never use such member! The result is undefined.\n"
+			"You can compare pointer to member to 'nullptr'.\n";
+	char_ptr1 = nullptr;
+	if (char_ptr1 == nullptr) {
+		cout << "Do not use pointers with null or default constructed pointers!\n";
+	}
+	char Base::* char_ptr4{};
+	if (char_ptr4 == nullptr) {
+		cout << "Do not use default constructed pointers!\n";
+	}
+
 	cout << "\n****** pointer to member and pointer ******\n"
 			"Pointer to member can not be assigned to a 'void *'\n";
 	// void * vptr = func_ptr1; //error: cannot convert ‘void (Base::*)(char)’ to ‘void*’ in initialization
-	cout << "Can assign 'nullptr' to pointer to member but never use such member! The result is undefined.\n";
-	char_ptr1 = nullptr;
 
 	cout << "END" << endl;
 

@@ -102,11 +102,29 @@ int main() {
 	cout << "typeinfo Alias2  : " << typeid(Alias2).name() << endl;
 	cout << "typeinfo Alias3  : " << typeid(Alias3).name() << endl;
 
-	cout << "No assignement to 'void *' possible!\n";
-	//void * vptr = fp1; //error: invalid conversion from ‘int (*)(int)’ to ‘void*’ [-fpermissive]
-	cout << "Can assign 'nullptr' to function pointer but never call such function!\n";
+	cout << "\nFunction pointers of same type can be compared:\n";
+	if (fp1 == pa1) {
+		cout << "Equal function pointers point to the same function.\n"
+				"(*fp1)(7)=" << (*fp1)(7) << endl <<
+				"(*pa1)(7)=" << (*pa1)(7) << endl;
+	}
+	cout << "Distinct pointer types without a cast can not be compared.\n";
+	//if (fp1 == fp3const); //error: comparison between distinct pointer types ‘int (*)(int)’ and ‘const int* (*)(int)’ lacks a cast [-fpermissive]
+	cout << "Top level cv-qualifiers are implicitly converted during compare:\n";
+	if (fp2 == fp1) {
+		cout << "Equal function pointers point to the same function.\n"
+				"fp1(6)=" << fp1(6) << endl <<
+				"fp2(6)=" << pa1(6) << endl;
+	}
+	cout << "Can assign 'nullptr' to function pointer and then it points to no function. You can compare function pointers to 'nullptr'.\n";
 	fp1 = nullptr;
-	// (*fp1)(3); //never!
+	if (fp1 == nullptr) {
+		cout << "Never use such function pointer!\n";
+		// (*fp1)(3); //never!
+	}
+
+	cout << "\nNo assignment to 'void *' possible!\n";
+	//void * vptr = fp1; //error: invalid conversion from ‘int (*)(int)’ to ‘void*’ [-fpermissive]
 
 	cout << "END" << endl;
 	return 0;
