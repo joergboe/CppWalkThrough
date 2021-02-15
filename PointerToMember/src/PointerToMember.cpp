@@ -3,7 +3,9 @@
 // Author      : joergboe
 //============================================================================
 
+#include <cstdlib>
 #include <iostream>
+
 using namespace std;
 
 class Base {
@@ -20,11 +22,6 @@ public:
 		printVars();
 		cout << " val=" << val << endl;
 	}
-	/*void print2(int val) const {
-		cout << "print2";
-		printVars();
-		cout << " val=" << val << endl;
-	}*/
 	void setA(char c_) {
 		a = c_;
 	}
@@ -170,5 +167,5 @@ int main() {
 
 	cout << "END" << endl;
 
-	return 0;
+	return EXIT_SUCCESS;
 }
