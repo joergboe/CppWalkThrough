@@ -106,7 +106,7 @@ int main() {
 			"If the char type is signed or unsigned depends on the implementation.\n"
 			"The unsigned char type is used for object representations and raw memory.\n"
 			"The size of char, signed char and unsigned char is per definition 1.\n"
-			"But the number of bits in a char may be different from 8. The CHAR_BIT\m"
+			"But the number of bits in a char may be different from 8. The CHAR_BIT\n"
 			"in header climits provides information about this size. The value depends\n"
 			"on the particular system and library implementation, but shall reflect the\n"
 			"limits of these types in the target platform.\n";
@@ -136,6 +136,9 @@ int main() {
 
 	cout << "\nNote: With the number notation the program becomes platform dependent!\n";
 
+	cout << "For every value of type unsigned char in range [0, 255], converting the value to char\n"
+			"and then back to unsigned char produces the original value. (since C++11).\n";
+
 	cout << "\nThe type wchar_t can hold wider character sets:\n";
 	{
 		wchar_t var1 = L'0'; wchar_t var2 = L'a';
@@ -147,7 +150,8 @@ int main() {
 	cout << "Literals of type wchar_t are written in the form:\n";
 	pr_vst("L'a':", L'a');
 	cout << "Or as octal or hexadecimal number format:\n";
-	pr_vst("L'\x30'", L'\x30');
+	pr_vst("L'\\x30'", L'\x30');
+	pr_vst("L'\\60'", L'\60');
 
 #if __cplusplus >= 201103L
 	cout << "Types char16_t and char32_t:\n";

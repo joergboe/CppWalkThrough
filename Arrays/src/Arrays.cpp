@@ -168,17 +168,26 @@ int main() {
 	cout << "Type of CharPointerArrayRefType1: " << typeid(CharPointerArrayRefType1).name() << endl <<
 			"Type of CharPointerArrayRefType2: " << typeid(CharPointerArrayRefType2).name() << endl;
 
-	cout << "Cast an array pointer into a reference with 'reinterpret_cast<>()':\n";
-	char const * * heapArray1 = new char const *[2] {"'a new string'", "'one more new string'"};
-	CharPointerArrayRefType1 heapArray1Ref = reinterpret_cast<char const * (&)[2]>(*heapArray1);
-	cout << "Print heapArray1: ";
-	for (std::size_t i = 0; i < 2; ++i)
-		cout << heapArray1[i] << " ";
-	cout << endl;
-	cout << "Print heapArray1Ref: ";
-	for (auto x : heapArray1Ref)
-		cout << x << " ";
-	cout << endl;
+	{
+		cout << "Cast an array pointer into a reference with 'reinterpret_cast<>()':\n";
+		char const * * heapArray1 = new char const *[2] {"'a new string'", "'one more new string'"};
+		CharPointerArrayRefType1 heapArray1Ref = reinterpret_cast<char const * (&)[2]>(*heapArray1);
+		cout << "Print heapArray1: ";
+		for (std::size_t i = 0; i < 2; ++i)
+			cout << heapArray1[i] << " ";
+		cout << endl;
+		cout << "Print heapArray1Ref: ";
+		for (auto x : heapArray1Ref)
+			cout << x << " ";
+		cout << endl;
+
+		cout << "And convert back to the pointer:\n";
+		char const ** ptr = heapArray1Ref;
+		if (ptr == heapArray1)
+			cout << "Properly converted!\n";
+		cout << "free memory with delete[] operator requires a pointer.\n";
+		delete[] ptr;
+	}
 
 	cout << "\nPointer to array type (must use parentheses to force correct declarator binding):\n";
 	char const * (* charPointerArrayPointer)[2] = &charPointerArray;
