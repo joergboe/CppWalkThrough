@@ -2,6 +2,7 @@
  * Demonstrating the basic principles of array usage in c++
  */
 
+#include <iterator> // std::begin() std::end()
 #include <iostream>
 #include <typeinfo>
 #include <array>
@@ -45,7 +46,7 @@ int main() {
 			"\ntypeid(ArrayType5).name(): " << typeid(ArrayType5).name() <<
 			"\ntypeid(ArrayType6).name(): " << typeid(ArrayType6).name() << endl;
 
-	cout << "\nTo declare an array, the size must be known at compile time:\n";
+	cout << "\nThe definition of an array (global, static or local), the size must be known at compile time:\n";
 	//ArrayType4 at4; //  error: storage size of ‘at4’ isn’t known
 
 	cout << "\nInitialization with initializer can have 2 forms: old style or extended initializer list (since C++11)\n";
@@ -73,7 +74,7 @@ int main() {
 
 	cout << "\n*** Assignments and for loop ***" << endl;
 	//a2 = a1; //error: invalid array assignment
-	cout << "a2 = a1; !!! no array assignment possible: use for loop instead\n";
+	cout << "a2 = a1; !!! no array assignment possible: use for loop instead or std::array\n";
 	for (size_t i=0; i<elem; ++i)
 		a2[i] = a1[i];
 
@@ -83,6 +84,16 @@ int main() {
 		cout << x << ", ";
 	cout << endl;
 
+	cout << "Integrated array is now applicable to function std::begin() and std::end() from header iterator\n"
+			"And can be used to iterate through the array";
+	auto it1 = begin(a2);
+	cout << "Type of the array iterator: " << typeid(it1).name() << endl <<
+		"Elements from a2 are now: ";
+	for (; it1 != end(a2); ++it1)
+		cout << *it1 << ", ";
+	cout << endl;
+
+
 	cout << "\n*** Arrays are easily converted into pointers to the first element ***\n";
 	int * ap = a1;
 	cout << "*ap=" << *ap << endl;
@@ -91,7 +102,7 @@ int main() {
 	cout << "Pointer arithmetic gives access to array elements: " << *ap << ", " << *(ap+1) << ", " << *(ap+2) << endl;
 
 	cout << "\n*** Arrays in heap memory may be created and with initializer list ***\n"
-			"But here the array size is not deducted!\n";
+			"But here the array size is not deducted! ?? Compiler Problem ?? -> P1009R2\n";
 	auto a3 = new int[4]{5, 6, 7, 8};
 	cout << "size of a3 = " << sizeof a3 << " : delivers the size of the pointer type = " << sizeof(void*) << endl;
 	cout << "sizeof *a3 = " << sizeof *a3 << " : delivers the size of the element type sizeof(int) = " << sizeof(int) << endl;
