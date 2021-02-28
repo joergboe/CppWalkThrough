@@ -35,7 +35,8 @@ struct MyInaccurateClass {
 
 /* global variable definitions
  * if global variables do not have an initializer, they are always zero initialized-
- * Initialization takes place during program startup (thread save)
+ * Initialization takes place during program startup. If the program runs more than one
+ * thread the initialization may run concurrently.
  */
 int ig;                //global variable - defined value 0
 char buffg[BUFFSIZE];  //global array defined ?
@@ -177,7 +178,9 @@ int main(int argc, char **argv) {
 			"a compiler generated constructor or with a user defined constructor.\n\n"
 			"If the program runs more than one thread, global variables and\n"
 			"static function variables may be accessed concurrently.\n\n"
-			"The initialization of global variables is made during program start and is thread save.\n"
+			"The initialization of global variables is made during program start.\n"
+			"If the program runs more than one thread this initialization may run concurrently.\n"
+			"The initialization of static variables in function scope is thread save.\n"
 			"Global and static function variables are destructed during program shutdown\n\n";
 
 	cout << "END" << endl;

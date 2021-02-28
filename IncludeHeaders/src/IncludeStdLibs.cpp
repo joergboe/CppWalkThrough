@@ -59,5 +59,5 @@ int main() {
 	std::printf("Identifier2 from myns1 getIdent2FromHeader1(): %s\n", myns2::getIdent2FromHeader1());
 	myns2::myfunction();
 	std::printf("END");
-	return 0;
+	return EXIT_SUCCESS;
 }
