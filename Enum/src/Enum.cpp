@@ -31,14 +31,14 @@ int main() {
 	//color = 4; //error: cannot convert ‘int’ to ‘main()::Color’ in assignment
 	color = Color(4);
 	cout << "Value of color: " << static_cast<int>(color) << endl;
-	cout << "Note: no runtime check for valid enumerations!" << endl;
+	cout << "Note: The result of such an operation may be not a enumeration value!" << endl;
 
 	cout << "\ntype of color: " << typeid(color).name() << " sizeof: " << sizeof color << endl;
 	cout << "type of Color: " << typeid(Color).name() << " sizeof: " << sizeof color << endl;
 	cout << "type of Color::orange: " << typeid(Color::orange).name() << " sizeof: " << sizeof color << endl;
 
 	cout << "\nThe underlying default type of enum class is int. The starting enumeration has default value 0.\n"
-			"This can be changed in enum definition\n";
+			"This can be changed in enum definition with initializer.\n";
 	enum class TrafficLight : char { red=6, yellow, green };
 	TrafficLight trafficLight{};
 	cout << "type of TrafficLight: " << typeid(trafficLight).name() << " size: " << sizeof trafficLight << endl;
@@ -59,10 +59,17 @@ int main() {
 	cout << "\nThere is no range check! So this is possible TrafficLight tly(TrafficLight(20)); Value of tly: " << static_cast<int>(tly) << endl;
 
 
-	cout << "\n****** Type enum ******\n";
-	cout << "- Underlying type is determined or may be defined\n"
-			"- Namespace pollution: all enumerations are inserted into namespace:\n"
-			"- Direct conversation to integral types possible.\n";
+	cout << "\n****** Type enum (unscoped enumeration) ******\n";
+	cout << "- The underlying type may be defined (since c++11) in the declaration."
+			"- Underlying type is determined from the compiler implementation and depends on the implementation.\n"
+			"- Namespace pollution: all enumerations are inserted into the enclosing namespace.\n"
+			"- Each enumerator is associated with a value of the underlying type.\n"
+			"- Each enumeratior value may be defined with an initializer\n"
+			"- If no initializer is given the enumeration values start with 0 and are incremented by 1 for each successor.\n"
+			"- The sequence of the enumeration values may have gaps an there might be duplicate values.\n"
+			"- Values of unscoped enumeration type are implicitly-convertible to integral types.\n"
+			"- Values of integer, floating-point, and enumeration types can be converted by static_cast or explicit cast, to any enumeration type.\n"
+			"The result of such an operation may not be an enumeration value.\n";
 	enum Enum1: unsigned char { item1=1, item2, item3 } enum1{};
 	//enum Enum2 { item1, item2, item3 } enum2{}; //error: redeclaration of ‘item1’
 	enum Enum2 { enum2_item1, enum2_item2, enum2_item3 } enum2{enum2_item2};
@@ -72,7 +79,13 @@ int main() {
 	cout << "\nimplicit conversion to underlying integral type possible\n";
 	unsigned char c1 = enum1;
 	int e2 = enum2;
-	cout << "c1: " << static_cast<int>(c1) << " e2: " << e2 << endl;
+	cout << "numerical representation of c1 is: " << static_cast<int>(c1) << " e2: " << e2 << endl;
+	cout << "Initialization from initializer list:\n";
+	Enum2 enum2x{enum2_item1};
+	cout << "enum2x: " << int(enum2x) << endl;
+	//Enum2 enum2y{2};
+	//Enum2 enum2z{-1};
+
 	cout << "\nDirect assignment with type mismatch is not possible; like : enum1 = enum2_item3;\n"
 	//enum1 = enum2_item3; //error: cannot convert ‘main()::Enum2’ to ‘main()::Enum1’ in assignment
 			"But implicit conversion can make trouble; like\n";
@@ -104,6 +117,14 @@ int main() {
 	//enum class { const1=1, const2, const3, const4 } var; //error: unnamed scoped enum is not allowed
 
 
+	cout << "\n****** Opaque enum ******\n"
+			"Opaque enum declaration for an unscoped enumeration must specify the name and the underlying type (since c++11)\n";
+	enum Opaque : int;
+	enum Opaque : int { oa, ob, oc=10, od=ob+oc, oe=1} opaqueEnum;
+	opaqueEnum = Opaque(0);
+	cout << "opaqueEnum: " << opaqueEnum << endl;
+	cout << "oa=" << oa << " ob=" << ob << " oc=" << oc << " od=" << od << " oe=" << oe << endl;
+
 	cout << "\n****** Combination of enumerations ******\n"
 			"Simple enums can be combined like: enum1 = static_cast<Enum1>(item1 | item2)\n";
 	enum1 = static_cast<Enum1>(item1 | item2);
@@ -133,6 +154,11 @@ int main() {
 		break;
 	}
 	cout << "Type: " << typeid(FlagEnum::flag1 | FlagEnum::flag2).name() << " size: " << sizeof(FlagEnum::flag1 | FlagEnum::flag2) << endl;
+
+	enum Aliasenum { myconst1=1, myconst2, myconst3=2, myconst4=2 } aliasenum = {};
+	cout << "Default value of Aliasenum: " << aliasenum << endl
+			<< "the values: " << myconst1 << " " << myconst2 << " " << myconst3 << " " << myconst4 << endl;
+
 	cout << "END!" << endl;
 	return 0;
 }

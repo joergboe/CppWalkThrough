@@ -16,6 +16,8 @@ int const * f3(int inp);
 int & f4(int inp);
 int const & f5(int inp);
 
+int (*retFpt())(int); // function that retruns a function pointer to int (*)(int)
+
 int resf2, resf3, resf4, resf5;
 
 
@@ -102,6 +104,16 @@ int main() {
 	cout << "typeinfo Alias2  : " << typeid(Alias2).name() << endl;
 	cout << "typeinfo Alias3  : " << typeid(Alias3).name() << endl;
 
+	cout << "\nUse a function that returns a function pointer\n";
+	int resx = retFpt()(2);
+	cout << "resx: " << resx << endl;
+	cout << "typeinfo: " << typeid(retFpt).name() << endl;
+
+	//Alias1 * (*ptrRetFpt)() = retFpt;
+	Palias2 (*ptrRetFpt)() = retFpt;
+	int resy = (*ptrRetFpt)()(4);
+	cout << "resy: " << resy << endl;
+
 	cout << "\nFunction pointers of same type can be compared:\n";
 	if (fp1 == pa1) {
 		cout << "Equal function pointers point to the same function.\n"
@@ -140,21 +152,25 @@ int f1ne(int inp) noexcept {
 }
 int * f2(int inp) {
 	resf2 = inp + inp + 2;
-	//Never return a reference to local variables in a real program. This is only for the sake of demonstration.
+	//Never return a reference to local variables in a real program.
 	return &resf2;
 }
 int const * f3(int inp) {
 	resf3 = inp + inp + 3;
-	//Never return a reference to local variables in a real program. This is only for the sake of demonstration.
+	//Never return a reference to local variables in a real program.
 	return &resf3;
 }
 int & f4(int inp) {
 	resf4 = inp + inp + 4;
-	//Never return a reference to local variables in a real program. This is only for the sake of demonstration.
+	//Never return a reference to local variables in a real program.
 	return resf4;
 }
 int const & f5(int inp) {
 	resf5 = inp + inp + 5;
-	//Never return a reference to local variables in a real program. This is only for the sake of demonstration.
+	//Never return a reference to local variables in a real program.
 	return resf5;
+}
+
+int (*retFpt())(int) {
+	return &f1;
 }
