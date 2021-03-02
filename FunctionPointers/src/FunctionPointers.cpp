@@ -109,10 +109,26 @@ int main() {
 	cout << "resx: " << resx << endl;
 	cout << "typeinfo: " << typeid(retFpt).name() << endl;
 
-	//Alias1 * (*ptrRetFpt)() = retFpt;
-	Palias2 (*ptrRetFpt)() = retFpt;
-	int resy = (*ptrRetFpt)()(4);
-	cout << "resy: " << resy << endl;
+	cout << "\nUse aliases to define more types for function pointers t such functions:\n";
+	Alias1 * (*ptrRetFpt1)() = retFpt;
+	Palias1 (*ptrRetFpt2)() = retFpt;
+	cout << "Type evolution :\n"
+			"int var;               // the variable of type int\n"
+			"                       // replace var with a function that returns int\n"
+			"int f(int);            // the function to get an int\n"
+			"                       // make the variable a pointer\n"
+			"int (*pf)(int);        // the pointer to a function that returns int\n"
+			"                       // replace fp with a function that returns that kind of pointer\n"
+			"int (*fpf())(int);     // a function that returns a pointer to function\n"
+			"                       // make the variable a pointer\n"
+			"int (*(*pfpf)())(int); // a pointer to a function that returns a function pointer\n";
+	int (*(*ptrRetFpt3)())(int) = retFpt;
+	int resy1 = (*ptrRetFpt1)()(4);
+	int resy2 = (*ptrRetFpt2)()(4);
+	int resy3 = (*ptrRetFpt3)()(4);
+	cout << "all have the same effect: resy1=" << resy1 << " resy2=" << resy2 << " resy3=" << resy3 << endl;
+	cout << "and are comparable ptrRetFpt1 == ptrRetFpt2 : " << boolalpha << (ptrRetFpt1 == ptrRetFpt2) <<
+			" ptrRetFpt2 == ptrRetFpt3 : " << (ptrRetFpt2 == ptrRetFpt3) << endl;
 
 	cout << "\nFunction pointers of same type can be compared:\n";
 	if (fp1 == pa1) {
@@ -138,6 +154,12 @@ int main() {
 	cout << "\nNo assignment to 'void *' possible!\n";
 	//void * vptr = fp1; //error: invalid conversion from ‘int (*)(int)’ to ‘void*’ [-fpermissive]
 
+	cout << "\nFunction references work accordingly:\n"
+			"int var;        // the variable\n"
+			"int f(int);     // the function returning a int\n"
+			"int (&rf)(int); // the refernce of such function\n";
+	int (&rf)(int) = f1;
+	cout << "rf(4) = " << rf(4) << endl;
 	cout << "END" << endl;
 	return 0;
 }

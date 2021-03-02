@@ -50,8 +50,9 @@ int main() {
 	//ArrayType4 at4; //  error: storage size of ‘at4’ isn’t known
 
 	cout << "\nInitialization with initializer can have 2 forms: old style or extended initializer list (since C++11)\n";
-	short int shortIntArray1[] = {1, 127};
-	short int shortIntArray2[] {1, 127};
+	short unsigned int shortIntArray1[] = {1, 128};
+	short unsigned int shortIntArray2[] {1, 127};
+	cout << "sizes shortIntArray1[]=" << sizeof shortIntArray1 << " shortIntArray2[]=" << sizeof shortIntArray2 << endl;
 	cout << "\nEmpty initializer list with size deduction yields a array of size 0\n";
 	char charArr1[] = {};
 	char charArr2[] {};
@@ -158,7 +159,11 @@ int main() {
 	useOneArray(chararr);
 
 	cout << "\n*** Arrays with more dimensions are arrays of arrays ...\n";
-	cout << "Note: declaration of an multidimensional array must have bounds for all dimensions except the first\n";
+	cout << "Note: declaration of an multidimensional array must have bounds for all dimensions except the first\n"
+			"Evolution of multidimensional array:\n"
+			"int var;       // var of type int\n"
+			"int var[2];    // array 2 of int\n"
+			"int var[3][2]; // array 3 of array 2 of int\n";
 	int ia[][2] = {{1,2}, {3,4}, {5,6}};
 	cout << "typeid: " << typeid(ia).name() << " size: " << sizeof ia << endl;
 
@@ -224,6 +229,7 @@ void wrongUseOneArray(int inp[3]) {
 	cout << "\n*** void wrongUseOneArray(int inp[3]) ***\n";
 	cout << "typeid(inp): " << typeid(inp).name() <<
 			"'inp' is decayed to a pointer and the actual array size is not available!\n"
+			"sizeof inp: " << sizeof inp << "\n"
 			"inp = ";
 	for (int i = 0; i < 3; ++i) cout << inp[i] << " ";
 	cout << "\nNote: the pointer can be used with subscription like an array.\n";
