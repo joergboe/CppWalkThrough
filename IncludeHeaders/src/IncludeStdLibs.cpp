@@ -21,8 +21,9 @@
  * cassert, cctype, cerrno, cfloat, climits, cmath, cstdarg, cstdint, cstddef, cstdio,
  * cstring, ctime, cuchar, cwchar
  *
- * In c++ programs the c-heasers (stdio.h, ...) should not be used.
+ * In c++ programs the c-headers (stdio.h, ...) should not be used.
  */
+#include <cstdlib>
 #include <cstdio>
 
 /* to include other headers of the same project use the form
