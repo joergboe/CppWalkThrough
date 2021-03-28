@@ -1,6 +1,6 @@
 /*
  * When must symbols be defined
- * When must symbols de declared
+ * When must symbols be declared
  */
 
 #include <iostream>

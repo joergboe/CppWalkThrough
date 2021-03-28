@@ -17,20 +17,23 @@ constexpr size_t BUFFSIZE = 1024000;
 
 /* A class with default constructor that makes a printout */
 class MyClass {
+	static int instanceCount;
 public:
+	const int instance;
 	int i;
-	MyClass(): i(55) {
-		cout << "MyClass()" << endl;
+	MyClass(): instance(instanceCount), i(55) {
+		cout << "MyClass() instance=" << instance << endl;
+		++instanceCount;
 	}
 	~MyClass() {
-		cout << "~MyClass()" << endl;
+		cout << "~MyClass()) instance=" << instance << endl;
 	}
 };
 
 /* A class with default constructor which does not initialize all members */
-struct MyInaccurateClass {
+struct MyClassPartInit {
 	int i, j;
-	MyInaccurateClass(): i{56} {};
+	MyClassPartInit(): i{56} {};
 };
 
 /* Compiler defined constructors do not initialize POD members */
@@ -39,8 +42,7 @@ struct MyTrivialConstructedClass {
 };
 
 /* helper functions */
-bool checkAllZerosInArray(char const (& arr)[BUFFSIZE], bool silent = true); //Function definition
-
+bool checkAllZerosInArray(char const (& arr)[BUFFSIZE], bool silent = true); //Function declaration
 
 /* A function that uses static variables */
 void useStaticVars() {
@@ -49,34 +51,42 @@ void useStaticVars() {
 	static char buffs[BUFFSIZE];
 	static MyClass myClasss;
 
-	cout << "is=" << is << " myClasss.i=" << myClasss.i << endl;
+	cout << "is=" << is << " myClasss.i=" << myClasss.i << " instance=" << myClasss.instance << endl;
 	checkAllZerosInArray(buffs, false);
 
 	cout << "Leave useStaticVars\n";
 }
 
 /* global variable definitions
+ * Global variables are placed in a special memory segment, that is zero initialized.
  * if global variables do not have an initializer, they are always zero initialized-
  * Initialization takes place during program startup. If the program runs more than one
  * thread the initialization may run concurrently.
  */
-int ig;                //global variable - defined value 0
-char buffg[BUFFSIZE];  //global array defined ?
-MyClass myClassg;      //global user defined class types
-MyInaccurateClass myInaccurateClassg;
-MyTrivialConstructedClass myTrivialConstructedClassg;
+int ig;                  // zero initialized
+char buffg[BUFFSIZE];    // all zero initialized
+MyClass myClassg;        // instance #1
+MyClass myClassarr[2];   // constructors are executed for all aggregate members
+MyClassPartInit myClassPartInitg; // all zero initialized
+MyTrivialConstructedClass myTrivialConstructedClassg; // all zero initialized
+
+/* Thread local
+ * Thread local variables are placed in a special memory segment, that is zero initialized.
+ * */
+int thread_local it; // zero initialized
+MyClass thread_local myClasst;
+MyClassPartInit thread_local myClassPartInitt;
 
 int main() {
 	cout << "****** START Main DefaultInitialization ******" << endl;
-
 	{
 		cout << "\n**** Global variables ****\n";
 		cout << "* Global variables without initializer are always initialized with 0:" << endl;
 		cout << "ig=" << ig << endl;
 		checkAllZerosInArray(buffg, false);
-		cout << "myClassg.i=" << myClassg.i << endl;
-		cout << "* That also true for class/struct types with incorrect constructors!\n";
-		cout << "myInaccurateClassg: i=" << myInaccurateClassg.i << " j=" << myInaccurateClassg.j << endl;
+		cout << "myClassg.i=" << myClassg.i << " instance=" << myClassg.instance << endl;
+		cout << "* That also true for class/struct types with incomplete constructors!\n";
+		cout << "myClassPartInitg: i=" << myClassPartInitg.i << " j=" << myClassPartInitg.j << endl;
 		cout << "myTrivialConstructedClassg: i=" << myTrivialConstructedClassg.i << " j=" << myTrivialConstructedClassg.j << endl;
 	}
 	{
@@ -93,11 +103,11 @@ int main() {
 
 		cout << "\n* For class/struct types, the constructor is always called.\n"
 				"* But if the constructor fails to initialize all (non-static) members, the values are undefined!\n";
-		MyClass myClassl;
-		MyInaccurateClass myInaccurateClassl;
+		MyClass myClassl; // instance #4
+		MyClassPartInit myClassPartInitl;
 		MyTrivialConstructedClass myTrivialConstructedClassl;
-		cout << "myClassl.i=" << myClassl.i << endl;
-		cout << "myInaccurateClassl: i=" << myInaccurateClassl.i << " j=" << myInaccurateClassl.j << endl;
+		cout << "myClassl.i=" << myClassl.i << " instance=" << myClassl.instance << endl;
+		cout << "myClassPartInitl: i=" << myClassPartInitl.i << " j=" << myClassPartInitl.j << endl;
 		cout << "myTrivialConstructedClassl: i=" << myTrivialConstructedClassl.i << " j=" << myTrivialConstructedClassl.j << endl;
 		cout << "* The destructor of local variables is called when the variables go out of scope.\n";
 	}
@@ -109,11 +119,20 @@ int main() {
 	useStaticVars();
 	useStaticVars();
 
-	// TODO: Thread local variables
 	cout << "\n\n **** Thread local variables ****\n"
 			"* thread-local variables get zero initialized.\n"
 			"* All non-local variables with thread-local storage duration are\n"
 			"initialized as part of thread launch, sequenced-before the execution of the thread function begins.\n";
+	cout << "it=" << it << endl;
+	cout << "myClasst: i=" << myClasst.i << " instance=" << myClasst.instance << endl;
+	cout << "myClassPartInitt: i=" << myClassPartInitt.i << " j=" << myClassPartInitt.j << endl;
+	{
+		static thread_local MyClass myClassst; // instance #7
+		static thread_local MyClassPartInit myClassPartInitst;
+		cout << "myClassst: i=" << myClassst.i << " instance=" << myClassst.instance << endl;
+		cout << "myClassPartInitst: i=" << myClassPartInitst.i << " j=" << myClassPartInitst.j << endl;
+	}
+
 	{
 		cout << "\n\n **** Dynamic Variables ****\n";
 		cout << "* Dynamic Variables (on heap memory) without initializer have no defined value guaranteed!\n";
@@ -176,8 +195,8 @@ int main() {
 	{
 		cout << "\n**** User defined types use always constructors\n";
 		cout << "\n* Constructor MyClass() is called for all cg (at the beginning) an for cl and cp now.\n";
-		MyClass cl;
-		MyClass * cp = new MyClass;
+		MyClass cl; // instance 8
+		MyClass * cp = new MyClass; // instance #9
 		cout << "Destruction is done when dynamic memory is deleted.\n";
 		delete cp;
 		cout << "Destruction is done when local variables go out of scope.\n";
@@ -194,11 +213,11 @@ int main() {
 	}
 	{
 		cout << "\n* But if a user defined constructor fails to initialize all members ..." << endl;
-		vector<MyInaccurateClass*> v;
+		vector<MyClassPartInit*> v;
 		size_t count = 0;
-		MyInaccurateClass* x;
+		MyClassPartInit* x;
 		do {
-			x = new MyInaccurateClass;
+			x = new MyClassPartInit;
 			v.push_back(x);
 			++count;
 		} while((count < 100000) && (x->i == 56) && (x->j == 0));
@@ -207,7 +226,7 @@ int main() {
 		} else {
 			cerr << "No uninitialized value found. This may happen." << endl;
 		}
-		for ( MyInaccurateClass* i : v)
+		for ( MyClassPartInit* i : v)
 			delete i;
 	}
 
@@ -245,3 +264,5 @@ bool checkAllZerosInArray(char const (&arr)[BUFFSIZE], bool silent) {
 		cout << "buffer of length " << sizeof arr << " contains " << buffzeros << " zeros." << endl;
 	return retval;
 }
+
+int MyClass::instanceCount = 1;
