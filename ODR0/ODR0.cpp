@@ -9,15 +9,18 @@
 using namespace std;
 
 // declarations
-extern int ig1; // extern makes the definition
-extern int const ic1;
+extern int ig1; // extern makes a declaration
+extern int const ic1; // extern makes a declaration
 void foo();
-static void foo_static();
+static void foo_static(); // function with internal binding
 
-// inline functions must be defined ??
+// inline functions must be defined in the translation unit
 inline void inline_func() {
 	cout << "Hello " << __func__ << endl;
 }
+
+// and must be declared before usage
+inline void inline_func2();
 
 // opaque definitions of enums
 enum E1 : int;
@@ -47,8 +50,8 @@ struct S2 {
 
 int main(int argc, char **argv) {
 	cout << "Hello ODR0!\n" << endl;
-	// Every used identifier must be at least declared
-	//undeclared_fiunction(); // error: ‘undeclared_fiunction’ was not declared in this scope
+	// Every used identifier must be at least declared before you can use it.
+	//undeclared_function(); // error: ‘undeclared_function’ was not declared in this scope
 
 	// local variables must be defined before use (there is no way to declare a local var)
 	int il; // definition but not initialized! not do this.
@@ -65,6 +68,7 @@ int main(int argc, char **argv) {
 	void bar(); // declaration may be in scope
 	bar();
 	inline_func();
+	inline_func2();
 
 	// variables of defined enums can be used
 	E1 e1;
@@ -100,6 +104,10 @@ int main(int argc, char **argv) {
 	return EXIT_SUCCESS;
 }
 
+// a function can not be used until it is at least declared
+void undeclared_function() {
+}
+
 // Used objects must be defined somewhere in the program
 int ig1 = 55;
 int ig2 = 56;
@@ -115,6 +123,10 @@ void foo_static() {
 }
 
 void bar() {
+	cout << "Hello " << __func__ << endl;
+}
+
+inline void inline_func2() {
 	cout << "Hello " << __func__ << endl;
 }
 
