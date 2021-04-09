@@ -5,6 +5,9 @@
 #include <iostream>
 using namespace std;
 
+template<typename ...Ts>
+void f1(Ts...);
+
 int main() {
 	cout << "Sizeof Operator\n\n" <<
 			"sizeof is an operator but when used with types braces are required." <<
@@ -47,7 +50,19 @@ int main() {
 
 	for (auto x : ca)
 		cout << x << endl;
-	cout << "End!" << endl;
 
+	cout << "\nsizeof...( parameter_pack )		(since C++11)\n"
+			"returns the number of parameters in a parameter pack.\n";
+	f1(1);
+	f1(2,'a',22.3,&cout);
+	f1();
+
+	cout << "End!" << endl;
 	return 0;
+}
+
+template<typename ...Ts>
+void f1(Ts... ) {
+	int s = sizeof...(Ts);
+	cout << "f1: has " << s << " arguments\n";
 }
