@@ -30,7 +30,7 @@ ifeq ($(MAKELEVEL),0)
       LDLIBS:       Extra library flags given to the linker.
   endef
 
-  export CXXWARNINGS ?= -Wall -Wextra -Wconversion -pedantic
+  export CXXWARNINGS ?= -pedantic -Wall -Wextra -Wconversion -Wnoexcept -Wredundant-decls -Wshadow -Wsign-conversion -Weffc++
 
   export CPPSOURCES = $(wildcard *.cpp)
   export TARGETS = $(CPPSOURCES:.cpp=)
