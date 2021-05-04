@@ -54,8 +54,8 @@ int main() {
 	short unsigned int shortIntArray2[] {1, 127};
 	cout << "sizes shortIntArray1[]=" << sizeof shortIntArray1 << " shortIntArray2[]=" << sizeof shortIntArray2 << endl;
 	cout << "\nEmpty initializer list with size deduction yields a array of size 0\n";
-	char charArr1[] = {};
-	char charArr2[] {};
+	__extension__ char charArr1[] = {};
+	__extension__ char charArr2[] {};
 	cout << "size charArr1: " << sizeof charArr1 << endl;
 	cout << "size charArr2: " << sizeof charArr2 << endl;
 	cout << "Empty initializer list yields a zero initialized array:\n";

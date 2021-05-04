@@ -357,7 +357,7 @@ int main() {
 
 	int ai[] {1, 2, 3};
 	pr_vst("int ai[] {1, 2, 3}:", ai, "During output, the array is converted into a pointer and thus, the address is printed.");
-	int ai2[] {};
+	__extension__ int ai2[] {};
 	pr_vst("int ai2[] {}      :", ai2);
 	cout << "\nNote: Arrays are silently converted to pointers at the slightest occasion.\n"
 			"During output with the output stream 'cout', the array is converted into a pointer. And thus for the most array types the address is printed.";
