@@ -23,9 +23,9 @@ void myfunc(int inp);
  */
 class MyClass {
 public:
-	MyClass(char const * reason, int i) :
-		reason(reason),
-		i(i) {
+	MyClass(char const * reason_, int i_) :
+		reason(reason_),
+		i(i_) {
 		cout << "MyClass(char const * reason, int i)\n";
 	}
 	MyClass(MyClass const & myclass) :
@@ -118,12 +118,12 @@ int main() {
 	for (int i : {12, 13}) {
 		try {
 			myfunc(i);
-		} catch (invalid_argument e) {
-			cout << "catch (invalid_argument e)\n"
-				"e.what(): " << e.what() << endl;
-		} catch (exception e) {
-			cout << "catch (exception e)\n"
-				"e.what(): " << e.what() << endl;
+		} catch (invalid_argument e1) {
+			cout << "catch (invalid_argument e1)\n"
+				"e1.what(): " << e1.what() << endl;
+		} catch (exception e2) {
+			cout << "catch (exception e2)\n"
+				"e2.what(): " << e2.what() << endl;
 		}
 		cout << endl;
 	}
@@ -176,12 +176,12 @@ int main() {
 		} catch (char const * e) {
 			cout << "catch (char const * e) or catch (char const * const e)\n"
 					"e: " << e << endl <<
-					"This catches both exeptions of type 'car *' and 'char const *'\n"
+					"This catches both exceptions of type 'car *' and 'char const *'\n"
 					"'char *' can be converted to 'char const *' (qualification conversion)\n";
 		} catch (exception * e) {
 			cout << "catch (exception * e)\n"
 					"e.what(): " << e->what() << endl <<
-					"This catches all exeptions with pointer type to 'std::exception' and descendant types.\n"
+					"This catches all exceptions with pointer type to 'std::exception' and descendant types.\n"
 					"'invalid_argument *' can be converted to 'exception *' (standard pointer conversion)\n"
 					"This clause is polymorphous: the type where e points to may be std::exception or descendant classes"
 					"Note: clean up memory!\n";
@@ -348,9 +348,11 @@ void myfunc(int inp) {
 		case 15:
 			cout << "inp=15: throw exception pointer with std lib error type a sibling from std::exception\n";
 			throw new invalid_argument("Reason inp=15");
-		case 16:
+		case 16: {
 			cout << "inp=16: throw a void pointer\n";
 			void *ptr = cparray;
 			throw ptr;
+		}
+		default:;
 	};
 }

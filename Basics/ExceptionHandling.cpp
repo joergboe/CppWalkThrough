@@ -18,7 +18,7 @@ void reThrowExceptionPointer(std::exception_ptr ep);
 
 void examinateCurrentException();
 
-void printException(std::exception const & e, int level = 0);
+void printException(std::exception const & e, std::string::size_type level = 0);
 
 int main() {
 	cout << "Basic Exception Handling (since C++11)" << endl;
@@ -114,13 +114,13 @@ int main() {
 		checkCurrentException(ep);
 		//std::rethrow_exception(ep); //This terminates the program!
 		throw 'a';
-	} catch (char e) {
-		cout << "Exception : " << e << " catched.\n";
+	} catch (char e1) {
+		cout << "Exception : " << e1 << " catched.\n";
 		std::exception_ptr ep = std::current_exception();
 		try {
 			reThrowExceptionPointer(ep);
-		} catch (char e) {
-			cout << "Exception : " << e << " catched twice.\n";
+		} catch (char e2) {
+			cout << "Exception : " << e2 << " catched twice.\n";
 		}
 	}
 
@@ -177,16 +177,16 @@ int main() {
 
 	try {
 		throw std::runtime_error("error 1");
-	} catch (std::exception const & e) {
-		cout << "catched std::exception: " << e.what() << endl;
+	} catch (std::exception const & e1) {
+		cout << "catched std::exception: " << e1.what() << endl;
 		cout << "Make default constructed std::nested_exception()\n";
 		std::nested_exception ne1;
 		if (ne1.nested_ptr()) {
 			cout << "ne1.rethrow_nested()\n";
 			try {
 				ne1.rethrow_nested();
-			}catch (std::exception const & e) {
-				cout << "catched std::exception: " << e.what() << endl;
+			}catch (std::exception const & e2) {
+				cout << "catched std::exception: " << e2.what() << endl;
 			}
 		}
 	}
@@ -195,17 +195,17 @@ int main() {
 
 	try {
 		throw std::runtime_error("error 1");
-	} catch (std::exception const & e) {
+	} catch (std::exception const & e1) {
 		examinateCurrentException();
 		try {
 			std::throw_with_nested(std::runtime_error("error 2"));
-		} catch (std::exception const & e) {
+		} catch (std::exception const & e2) {
 			examinateCurrentException();
 			try {
 				std::throw_with_nested(std::runtime_error("error 3"));
-			} catch (std::exception const & e) {
+			} catch (std::exception const & e3) {
 				examinateCurrentException();
-				printException(e);
+				printException(e3);
 			}
 		}
 	}
@@ -259,12 +259,12 @@ void examinateCurrentException() {
 	cout << endl;
 }
 
-void printException(std::exception const & e, int level) {
+void printException(std::exception const & e, std::string::size_type level) {
 	std::cout << std::string(level, '\t') << "std::exception: " << e.what() << '\n';
 	try {
 		std::rethrow_if_nested(e);
-	} catch(const std::exception& e) {
-		printException(e, level+1);
+	} catch(const std::exception& e2) {
+		printException(e2, level+1);
 	} catch(...) {
 		cerr << "unexpected exception!";
 	}

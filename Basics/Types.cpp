@@ -82,7 +82,7 @@ int main() {
 		var1 = 0; var2 = 55;
 		cout << "var1 = 0 : " << var1 << " var2 = 55 : " << var2 << "\n";
 		int i = var2;
-		cout << "int i = bd : " << i << std::noboolalpha << "\n";
+		cout << "int i = var2 : " << i << std::noboolalpha << "\n";
 	}
 
 	cout << "\n****** Character Types ******\n"
@@ -315,7 +315,7 @@ int main() {
 
 	cout << "\n****** Floating Point Types ******\n";
 	{
-		float var1 = 0.0; float var2 = 1.1;
+		float var1 = 0.0f; float var2 = 1.1f;
 		pr_vvstmm("float:      ", var1, var2);
 	}
 	{

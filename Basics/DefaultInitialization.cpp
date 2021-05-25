@@ -33,7 +33,7 @@ public:
 /* A class with default constructor which does not initialize all members */
 struct MyClassPartInit {
 	int i, j;
-	MyClassPartInit(): i{56} {};
+	MyClassPartInit(): i{56} {}
 };
 
 /* Compiler defined constructors do not initialize POD members */
@@ -45,17 +45,7 @@ struct MyTrivialConstructedClass {
 bool checkAllZerosInArray(char const (& arr)[BUFFSIZE], bool silent = true); //Function declaration
 
 /* A function that uses static variables */
-void useStaticVars() {
-	cout << "Enter useStaticVars\n";
-	static int is;
-	static char buffs[BUFFSIZE];
-	static MyClass myClasss;
-
-	cout << "is=" << is << " myClasss.i=" << myClasss.i << " instance=" << myClasss.instance << endl;
-	checkAllZerosInArray(buffs, false);
-
-	cout << "Leave useStaticVars\n";
-}
+void useStaticVars();
 
 /* global variable definitions
  * Global variables are placed in a special memory segment, that is zero initialized.
@@ -250,6 +240,19 @@ int main() {
 	cout << "END" << endl;
 
 	return EXIT_SUCCESS;
+}
+
+/* A function that uses static variables */
+void useStaticVars() {
+	cout << "Enter useStaticVars\n";
+	static int is;
+	static char buffs[BUFFSIZE];
+	static MyClass myClasss;
+
+	cout << "is=" << is << " myClasss.i=" << myClasss.i << " instance=" << myClasss.instance << endl;
+	checkAllZerosInArray(buffs, false);
+
+	cout << "Leave useStaticVars\n";
 }
 
 bool checkAllZerosInArray(char const (&arr)[BUFFSIZE], bool silent) {

@@ -64,7 +64,7 @@ int main() {
 			"- Underlying type is determined from the compiler implementation and depends on the implementation.\n"
 			"- Namespace pollution: all enumerations are inserted into the enclosing namespace.\n"
 			"- Each enumerator is associated with a value of the underlying type.\n"
-			"- Each enumeratior value may be defined with an initializer\n"
+			"- Each enumerator value may be defined with an initializer\n"
 			"- If no initializer is given the enumeration values start with 0 and are incremented by 1 for each successor.\n"
 			"- The sequence of the enumeration values may have gaps an there might be duplicate values.\n"
 			"- Values of unscoped enumeration type are implicitly-convertible to integral types.\n"
@@ -91,7 +91,8 @@ int main() {
 			"But implicit conversion can make trouble; like\n";
 	enum1 = item1;
 	if (enum1 == enum2_item2)
-		cout << "Comparison enum1 == enum2_item2 evaluates to true: Wrong types are compared!\n";
+		cout << "Comparison enum1 == enum2_item2 evaluates to true: Wrong types are compared!\n"
+				"But implementations can issue warnings (gcc: -Wenum-compare)\n";
 	cout << "No direct arithmetic operations possible\n";
 	//++enum1; //error: no match for ‘operator++’ (operand type is ‘main()::Enum1’)
 	cout << "No direct conversion from int like: enum1 = Enum1{1} or enum2 = Enum2{1}\n";
@@ -147,7 +148,8 @@ int main() {
 		cout << "FlagEnum::flag3\n";
 		break;
 	case FlagEnum::flag1 | FlagEnum::flag2:
-		cout << "Combined FlagEnum::flag1 | FlagEnum::flag2\n";
+		cout << "Combined FlagEnum::flag1 | FlagEnum::flag2\n"
+				"The usage of combined enums in a switch statement provokes a warning from -Wswitch (gcc)\n";
 		break;
 	case FlagEnum::none:
 		cout << "FlagEnum::none\n";

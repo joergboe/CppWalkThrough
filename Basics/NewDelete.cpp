@@ -8,6 +8,8 @@
 
 using namespace std;
 
+constexpr size_t BLOCK_SIZE = 1024;
+
 class MyClass {
 public:
 	MyClass() {
@@ -88,10 +90,10 @@ int main() {
 
 	cout << "\nnew throws bad_alloc when not enough memory is available\n";
 	{
-		size_t blocksize = 1024;
+		size_t blocksize = BLOCK_SIZE;
 		try {
 			while (true) {
-				size_t kibyte = sizeof(int[blocksize]) / 1024;
+				size_t kibyte = sizeof(int[BLOCK_SIZE]) / 1024;
 				size_t mbyte = kibyte / 1024;
 				cout << "try allocation new int[" << blocksize << "] with size: " << mbyte << " megabytes";
 				int * buffptr = new int[blocksize];
@@ -108,9 +110,9 @@ int main() {
 
 	cout << "\nThe nothrow version return a nullptr if not enough memory is available instead of throwing the bad_alloc exception.\n";
 	{
-		size_t blocksize = 1024;
+		size_t blocksize = BLOCK_SIZE;
 		while (true) {
-			size_t kibyte = sizeof(int[blocksize]) / 1024;
+			size_t kibyte = sizeof(int[BLOCK_SIZE]) / 1024;
 			size_t mbyte = kibyte / 1024;
 			cout << "try allocation new(nothrow) int[" << blocksize << "] with size: " << mbyte << " megabytes";
 			int * buffptr = new(nothrow) int[blocksize];

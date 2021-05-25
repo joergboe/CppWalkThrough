@@ -16,7 +16,7 @@ int const * f3(int inp);
 int & f4(int inp);
 int const & f5(int inp);
 
-int (*retFpt())(int); // function that retruns a function pointer to int (*)(int)
+int (*retFpt())(int); // function that returns a function pointer to int (*)(int)
 
 int resf2, resf3, resf4, resf5;
 
@@ -36,7 +36,7 @@ int main() {
 	int (* fp1ne)(int) noexcept = &f1ne;
 	res = (*fp1ne)(4);
 	cout << "res=" << res << endl;
-	cout << "But a noexcept pointer must not point to a normal function (which may throw an execpion)\n";
+	cout << "But a noexcept pointer must not point to a normal function (which may throw an exception)\n";
 	fp1ne = &f1;
 	cout << "This may be a problem with (GCC) 4.8.5\n"
 			"The program may be terminated even if an exception handler is there! (due to violation of the nothrow promise)\n";
@@ -157,7 +157,7 @@ int main() {
 	cout << "\nFunction references work accordingly:\n"
 			"int var;        // the variable\n"
 			"int f(int);     // the function returning a int\n"
-			"int (&rf)(int); // the refernce of such function\n";
+			"int (&rf)(int); // the reference of such function\n";
 	int (&rf)(int) = f1;
 	cout << "rf(4) = " << rf(4) << endl;
 	cout << "END" << endl;
