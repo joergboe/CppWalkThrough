@@ -1,8 +1,13 @@
+/*
+ * Demonstrating of the pre-increment and post-increment operator.
+ */
+
 #include <iostream>
+
 using namespace std;
 
 int main() {
-	cout << "***** pre increment : value = 1 *****" << endl;
+	cout << "***** pre-increment : value = 1 *****" << endl;
 	int value = 1;
 	cout << "++value=" << ++value << endl;
 	cout << "value=" << value << endl;
@@ -13,7 +18,7 @@ int main() {
 	cout << "copy = ++value; copy=" << copy << endl;
 	cout << "value=" << value << endl;
 
-	cout << "***** post increment : value = 1 *****" << endl;
+	cout << "***** post-increment : value = 1 *****" << endl;
 	value = 1;
 	cout << "value++=" << value++ << endl;
 	cout << "value=" << value << endl;
