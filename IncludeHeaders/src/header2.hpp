@@ -8,16 +8,15 @@
 
 #include "../incl/header1.hpp"
 
-/* avoid global using in header files to prevent name-space pollution */
-//using namespace myns2;
+/* Avoid global using in header files to prevent name-space pollution.
+ * Using directive in header files can cause name clashes in other files. */
+//using namespace myns1;
 
 namespace myns2 {
-	/*
-	 * avoid also name-space scoped using declarations
-	 * this is effective also in other slices of the name-space
-	 */
+	/* Also avoid name-space scoped using declarations
+	 * this is effective also in other slices of the name-space. */
 	using namespace myns1;
-	char const identifier1[] = "Identifier from header2.hpp";
+	char const identifier1[] = "myns2::identifier1 from header2.hpp";
 
 	char const * getIdentFromHeader1() {
 		return identifier1; //myns1::identifier1 takes precedence

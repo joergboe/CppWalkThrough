@@ -1,8 +1,4 @@
 /*
- * Name        : IncludeStdLibs.cpp
- * Author      : jb
- * Version     :
- * Copyright   : Your copyright notice
  * Include pre-processor directive
  */
 
@@ -14,7 +10,7 @@
 //#include "string" // also works also
 
 /*
- * for every c-library header X.h a c++ header cX is available.
+ * For every c-library header X.h a c++ header cX is available.
  * These the headers make c-header declarations available in name-space std
  * and due to compatibility reasons often also in global name-space.
  * Some examples:
@@ -26,10 +22,11 @@
 #include <cstdlib>
 #include <cstdio>
 
-/* to include other headers of the same project use the form
+/* To include other headers of the same project use the form
  * #include "..."
  * The search for this files starts in the source directory and
- * second in the library search path
+ * second in the library search path. To ensure that the project internal header
+ * file is included, use the full path to the header.
  */
 #include "header2.hpp"
 #include "../incl/header1.hpp"
@@ -43,21 +40,21 @@
 /* namespaces may be sliced */
 namespace myns2 {
 	void myfunction() {
-		std::printf("Identifier1 from myns1: %s\n", identifier1);
+		std::printf("Access from myns2 with using myns1 declaration identifier1: %s\n", identifier1);
 		//the using declaration in in myns2 is effective !
-		std::printf("Identifier2 from myns1: %s\n", identifier2);
+		std::printf("Access from myns2 with using myns1 declaration identifier2: %s\n", identifier2);
 	}
 }
 
 int main() {
-	std::printf("Hello IncludeStdLibs");
+	std::printf("Hello IncludeHeaders\n");
 	printf("The inclusion of the c.. versions of the standard c library headers\n"
 			"makes the header declarations available in global name-space and in name-space std\n");
 
-	std::printf("Identifier1 from myns1: %s\n", myns1::identifier1);
-	std::printf("Identifier1 from myns2: %s\n", myns2::identifier1);
-	std::printf("Identifier1 from myns2 getIdentFromHeader1(): %s\n", myns2::getIdentFromHeader1());
-	std::printf("Identifier2 from myns1 getIdent2FromHeader1(): %s\n", myns2::getIdent2FromHeader1());
+	std::printf("Full qualified access myns1::identifier1 %s\n", myns1::identifier1);
+	std::printf("Full qualified access myns2::identifier1 %s\n", myns2::identifier1);
+	std::printf("Access from myns2 with using myns1 declaration getIdentFromHeader1(): %s\n", myns2::getIdentFromHeader1());
+	std::printf("Access from myns2 with using myns1 declaration getIdent2FromHeader1(): %s\n", myns2::getIdent2FromHeader1());
 	myns2::myfunction();
 	std::printf("END");
 	return EXIT_SUCCESS;
