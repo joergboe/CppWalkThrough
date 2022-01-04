@@ -37,16 +37,9 @@ int main() {
 	res = (*fp1ne)(4);
 	cout << "res=" << res << endl;
 	cout << "But a noexcept pointer must not point to a normal function (which may throw an exception)\n";
-	fp1ne = &f1;
-	cout << "This may be a problem with (GCC) 4.8.5\n"
-			"The program may be terminated even if an exception handler is there! (due to violation of the nothrow promise)\n";
-	try {
-		res = (*fp1ne)(4);
-		cout << "res=" << res << endl;
-	} catch (exception const & e) {
-		cout << "exception caught: " << e.what() << endl;
-	}
-
+	//fp1ne = &f1; //error: invalid conversion from ‘int (*)(int)’ to ‘int (*)(int) noexcept’ [-fpermissive]
+	//TODO: The program may be terminated even if an exception handler is there! (due to violation of the nothrow promise)
+	//TODO: Type conversions.
 	//fp1 = &f2; //error: invalid conversion from ‘int* (*)(int)’ to ‘int (*)(int)’ [-fpermissive]
 	//fp1 = &f3; //dito error
 	//fp1 = &f4; //dito error
@@ -72,6 +65,12 @@ int main() {
 	Palias1 pa1 = &f1;
 	cout << "(*pa1)(2)=" << (*pa1)(2) << endl;
 
+	//TODO: noexcept allowed in typedef?
+	typedef int (*Palias1ne)(int) noexcept;
+	Palias1ne pa1ne = &f1ne;
+	cout << "(*pa1ne)(2)=" << (*pa1ne)(2) << endl;
+	//pa1ne = &f1; //error: invalid conversion from ‘int (*)(int)’ to ‘Palias1ne’ {aka ‘int (*)(int) noexcept’} [-fpermissive]
+
 	cout << "Use type alias for function type old style and use it as pointer\n";
 	typedef int Alias1(int);
 	Alias1 * pa2 = &f1;
@@ -89,27 +88,28 @@ int main() {
 
 	cout << "Exception specification should not be part of the alias. Problem with (GCC) 4.8.5\n";
 	using Alias3 = int(*)(int) noexcept;
-	cout << "This assignment should not be possible. Problem with (GCC) 4.8.5\n";
-	Alias3 pa5 = &f1;
+	Alias3 pa5 = &f1ne;
 	cout << "(*pa5)(3)=" << (*pa5)(3) << endl;
+	//pa5 = &f1; //error: invalid conversion from ‘int (*)(int)’ to ‘Alias3’ {aka ‘int (*)(int) noexcept’} [-fpermissive]
 
-	cout << "typeinfo fp1     : " << typeid(fp1).name() << endl;
-	cout << "typeinfo fp1ne   : " << typeid(fp1ne).name() << endl;
-	cout << "typeinfo fp2     : " << typeid(fp2).name() << endl;
-	cout << "typeinfo fp3const: " << typeid(fp3const).name() << endl;
-	cout << "typeinfo fp5     : " << typeid(fp5).name() << endl;
-	cout << "typeinfo Palias1 : " << typeid(Palias1).name() << endl;
-	cout << "typeinfo Palias2 : " << typeid(Palias2).name() << endl;
-	cout << "typeinfo Alias1  : " << typeid(Alias1).name() << endl;
-	cout << "typeinfo Alias2  : " << typeid(Alias2).name() << endl;
-	cout << "typeinfo Alias3  : " << typeid(Alias3).name() << endl;
+	cout << "typeinfo fp1       : " << typeid(fp1).name() << endl;
+	cout << "typeinfo fp1ne     : " << typeid(fp1ne).name() << endl;
+	cout << "typeinfo fp2       : " << typeid(fp2).name() << endl;
+	cout << "typeinfo fp3const  : " << typeid(fp3const).name() << endl;
+	cout << "typeinfo fp5       : " << typeid(fp5).name() << endl;
+	cout << "typeinfo Palias1   : " << typeid(Palias1).name() << endl;
+	cout << "typeinfo Palias1ne : " << typeid(Palias1ne).name() << endl;
+	cout << "typeinfo Palias2   : " << typeid(Palias2).name() << endl;
+	cout << "typeinfo Alias1    : " << typeid(Alias1).name() << endl;
+	cout << "typeinfo Alias2    : " << typeid(Alias2).name() << endl;
+	cout << "typeinfo Alias3    : " << typeid(Alias3).name() << endl;
 
 	cout << "\nUse a function that returns a function pointer\n";
 	int resx = retFpt()(2);
 	cout << "resx: " << resx << endl;
 	cout << "typeinfo: " << typeid(retFpt).name() << endl;
 
-	cout << "\nUse aliases to define more types for function pointers t such functions:\n";
+	cout << "\nUse aliases to define more types for function pointers to such functions:\n";
 	Alias1 * (*ptrRetFpt1)() = retFpt;
 	Palias1 (*ptrRetFpt2)() = retFpt;
 	cout << "Type evolution :\n"
