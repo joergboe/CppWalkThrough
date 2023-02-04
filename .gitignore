@@ -39,3 +39,6 @@
 
 # Settings from eclipse
 /*/.settings/
+.project
+.cproject
+
