@@ -32,13 +32,23 @@
 *.app
 
 # Build artifacts
-/*/Debug/
-/*/Release/
-/*/build/
-/*/bin/
+Debug/
+Release/
+build/
+bin/
+debug/
+run/
 
 # Settings from eclipse
-/*/.settings/
+.settings/
 .project
 .cproject
 
+# codeblocks artifacts
+*.cbp
+*.layout
+*.save
+
+# KDevelop artifacts
+*.kdev4
+.kdev4/
