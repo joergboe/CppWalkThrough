@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+*.dep
 
 # Compiled Object files
 *.slo
@@ -40,9 +41,9 @@ debug/
 run/
 
 # Settings from eclipse
-#.settings/
-#.project
-#.cproject
+.settings/
+.project
+.cproject
 
 # codeblocks artifacts
 *.cbp
@@ -50,8 +51,19 @@ run/
 *.save
 
 # KDevelop artifacts
-#*.kdev4
-#.kdev4/
+*.kdev4
+.kdev4/
 
 # mktsimple artifacts
-#.mktsimple/
+.mktsimple/
+*.mks.tmp
+*~
+mktsimple/
+compile_commands.json
+Makefile
+
+# Kate specific files
+.kateproject
+.cache/
+*.kate-swp
+
