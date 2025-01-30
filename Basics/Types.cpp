@@ -2,6 +2,7 @@
  * Internal types and literals
  */
 
+#include <cstdint>
 #include <iostream>
 #include <iomanip>
 #include <typeinfo>
@@ -233,6 +234,7 @@ int main() {
 	cout << "\nThe type of an int literal is adapted to the value"
 			"The type of the integer literal is the first type in which the value can fit,\n"
 			"and depends on the suffix and the numeric base.\n";
+	cout << "Literals without suffix are never shorter than int, but may be unsigned.\n";
 	pr_vst("0                    :", 0, "int");
 	pr_vst("0xFFFF               :", 0xFFFF, "int");
 	pr_vst("0X7fffffff           :", 0X7fffffff, "int");
@@ -240,8 +242,12 @@ int main() {
 	pr_vst("4,294,967,295        :", 4294967295, "long int ! Decimal-literals are packed in an signed type");
 	pr_vst("0x7FFFFFFFFFFFFFFF   :", 0x7FFFFFFFFFFFFFFF, "long int");
 	pr_vst("0xFFFFFFFFFFFFFFFF   :", 0xFFFFFFFFFFFFFFFF, "unsigned long int");
-	cout << "18446744073709551615 : size:" << sizeof 18446744073709551615 << " type:" << typeid(18446744073709551615).name() << " Switch to the next integer type 128 bit\n";
-	pr_vst("0xFFFFFFFFFFFFFFFFF  :", 0xFFFFFFFFFFFFFFFFF, "If the value becomes to big, it is truncated. The compiler should produce a warning here!");
+	cout << "Some implementations may support bigger int types such as int128\n";
+	cout << "Decimal-literals are packed in an signed type, thus now switching to Switch to the next integer type 128 bit\n";
+	cout << "18446744073709551615 : size:" << sizeof 18446744073709551615 << " type:" << typeid (18446744073709551615).name() << " Switch to the next integer type 128 bit\n";
+	auto bigi = 18446744073709551615;
+	cout << "18446744073709551615 : size:" << sizeof bigi << " type:" << typeid (bigi).name() << endl;
+	cout << "But there is no overload for the << operator!\n";
 
 	cout << "\nLiterals with prefix l or L are never shorter than a long int. But may be unsigned!\n";
 	pr_vst("0l:                  :", 0l);
@@ -250,11 +256,6 @@ int main() {
 	pr_vst("4,294,967,295l:      :", 4294967295l, "long int ! Decimal-literals are packed in an signed type");
 	pr_vst("0x7FFFFFFFFFFFFFFFl: :", 0x7FFFFFFFFFFFFFFFl, "long int");
 	pr_vst("0xFFFFFFFFFFFFFFFFl: :", 0xFFFFFFFFFFFFFFFFl, "unsigned long int");
-	cout << "18446744073709551615l: size:" << sizeof 18446744073709551615l << " type:" << typeid(18446744073709551615l).name() << " Switch to the next integer type 128 bit\n";
-	long int temps = 18446744073709551615l;
-	pr_vst("long int temps = 18446744073709551615l          :", temps, "!!! The value is to large for a long int and thus truncated");
-	unsigned long int tempu = 18446744073709551615l;
-	pr_vst("unsigned long int tempu = 18446744073709551615l :", tempu, "But fits into a unsigned long int");
 
 	cout << "\nLiterals with prefix ll or LL are never shorter than a long long int. But may be unsigned!\n";
 	pr_vst("0ll                  :", 0ll);
@@ -264,7 +265,11 @@ int main() {
 	pr_vst("0x7FFFFFFFFFFFFFFFll :", 0x7FFFFFFFFFFFFFFFll);
 	pr_vst("0xFFFFFFFFFFFFFFFFll :", 0xFFFFFFFFFFFFFFFFll, "unsigned long long int");
 	cout << "18446744073709551615ll: size:" << sizeof 18446744073709551615ll << " type:" << typeid(18446744073709551615ll).name() << " Switch to the next integer type 128 bit\n";
-
+	long long int temps = 18446744073709551615l;
+	pr_vst("long int temps = 18446744073709551615l          :", temps, "!!! The value is to large for a signed long long int.");
+	unsigned long long int tempu = 18446744073709551615l;
+	pr_vst("unsigned long int tempu = 18446744073709551615l :", tempu, "But fits into a unsigned long int");
+	
 	cout << "\nLiterals with prefix u or U are always unsigned\n";
 	pr_vst("0u                   :", 0u);
 	pr_vst("0x7FFFFFFFu          :", 0x7FFFFFFFu);
@@ -450,7 +455,7 @@ int main() {
 		pr_vstmm("auto var = sizeof(int) :", var);
 	}
 	cout << "\n";
-	pr_st<void>("void           :", "The void type does not represent any type.");
+//	pr_st<void>("void           :", "The void type does not represent any type.");
 	//void v; //error: variable or field ‘v’ declared void
 	cout << "Note: variables of type void can not be declared!\n";
 	cout << "\n";

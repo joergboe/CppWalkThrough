@@ -179,7 +179,7 @@ int main() {
 		char (&buffhr2)[BUFFSIZE] = reinterpret_cast<char (&)[BUFFSIZE]>(*buffh2);
 		checkAllZerosInArray(buffhr2, false);
 		delete ph2;
-		delete buffh2;
+		delete[] buffh2;
 	}
 
 	{
