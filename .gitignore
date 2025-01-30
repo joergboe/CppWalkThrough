@@ -63,7 +63,7 @@ compile_commands.json
 Makefile
 
 # Kate specific files
-.kateproject
+.kateproject*
 .cache/
 *.kate-swp
 

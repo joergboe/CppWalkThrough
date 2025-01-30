@@ -65,11 +65,12 @@ int main() {
 	Palias1 pa1 = &f1;
 	cout << "(*pa1)(2)=" << (*pa1)(2) << endl;
 
-	//TODO: noexcept allowed in typedef?
+	cout << "C++11: Exception specification is not allowed in typedefs! Problem with (GCC) some versions allow this anyway.\n";
+#if __cplusplus >= 201703L
 	typedef int (*Palias1ne)(int) noexcept;
-	Palias1ne pa1ne = &f1ne;
-	cout << "(*pa1ne)(2)=" << (*pa1ne)(2) << endl;
-	//pa1ne = &f1; //error: invalid conversion from ‘int (*)(int)’ to ‘Palias1ne’ {aka ‘int (*)(int) noexcept’} [-fpermissive]
+	Palias1ne pa1ne = & f1ne;
+	cout << "(*pa1ne)(3)=" << (*pa1ne)(3) << endl;
+#endif
 
 	cout << "Use type alias for function type old style and use it as pointer\n";
 	typedef int Alias1(int);
@@ -86,10 +87,12 @@ int main() {
 	Alias2 * pa4 = f1;
 	cout << "pa4(3)=" << pa4(3) << endl;
 
-	cout << "Exception specification should not be part of the alias. Problem with (GCC) 4.8.5\n";
+	cout << "C++11: Exception specification should not be part of the alias! Problem with (GCC) some versions allow this anyway.\n";
+#if __cplusplus >= 201703L
 	using Alias3 = int(*)(int) noexcept;
 	Alias3 pa5 = &f1ne;
 	cout << "(*pa5)(3)=" << (*pa5)(3) << endl;
+#endif
 	//pa5 = &f1; //error: invalid conversion from ‘int (*)(int)’ to ‘Alias3’ {aka ‘int (*)(int) noexcept’} [-fpermissive]
 
 	cout << "typeinfo fp1       : " << typeid(fp1).name() << endl;
@@ -98,11 +101,15 @@ int main() {
 	cout << "typeinfo fp3const  : " << typeid(fp3const).name() << endl;
 	cout << "typeinfo fp5       : " << typeid(fp5).name() << endl;
 	cout << "typeinfo Palias1   : " << typeid(Palias1).name() << endl;
+#if __cplusplus >= 201703L
 	cout << "typeinfo Palias1ne : " << typeid(Palias1ne).name() << endl;
+#endif
 	cout << "typeinfo Palias2   : " << typeid(Palias2).name() << endl;
 	cout << "typeinfo Alias1    : " << typeid(Alias1).name() << endl;
 	cout << "typeinfo Alias2    : " << typeid(Alias2).name() << endl;
+#if __cplusplus >= 201703L
 	cout << "typeinfo Alias3    : " << typeid(Alias3).name() << endl;
+#endif
 
 	cout << "\nUse a function that returns a function pointer\n";
 	int resx = retFpt()(2);
